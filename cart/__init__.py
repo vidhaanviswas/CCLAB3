@@ -18,19 +18,25 @@ def get_cart(username: str) -> list:
     if cart_details is None:
         return []
     
-    items = []
-    for cart_detail in cart_details:
-        # contents = cart_detail['contents']    "Removed for optimization"
-        # evaluated_contents = eval(contents)  
-        # for content in evaluated_contents:
-        for content in eval(cart_detail['contents']):
-            items.append(content)
+    # items = []
+    # for cart_detail in cart_details:
+    #     contents = cart_detail['contents']    
+    #     evaluated_contents = eval(contents)  
+    #     for content in evaluated_contents:
+    #     for content in eval(cart_detail['contents']):
+    #         items.append(content)
     
-    i2 = []
-    for i in items:
-        temp_product = products.get_product(i)
-        i2.append(temp_product)
-    return i2
+    # i2 = []
+    # for i in items:
+    #     temp_product = products.get_product(i)
+    #     i2.append(temp_product)
+    # return i2
+
+    # <<Optimized Code>>
+    items = [products.get_product(content) for cart_detail in cart_details
+            for content in eval(cart_detail['contents'])]
+
+    return items
 
 def add_to_cart(username: str, product_id: int):
     dao.add_to_cart(username, product_id)
